@@ -144,7 +144,9 @@ void loop() {
 
   if (mqtt_client.connected()){
     mqtt_client.loop();
-    mqtt_client.publish("matheusvidal/feeds/presenca", String(distanciaCm).c_str(), true);
+    if (distanciaCm <= 60){  
+        mqtt_client.publish("matheusvidal/feeds/presenca", String(distanciaCm).c_str(), true);
+    }  
     mqtt_client.publish("matheusvidal/feeds/vibracao", String(vibracao_valor).c_str(), true + "\n");
     Serial.println("Publicou o dado da vibração: " + String(vibracao_valor));
     Serial.println("Publicou o dado da presença: " + String(distanciaCm) + "\n");
