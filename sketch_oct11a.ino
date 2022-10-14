@@ -1,3 +1,4 @@
+//Bibliotecas do projeto
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <PubSubClient.h>
@@ -7,20 +8,19 @@ WiFiClient ESPWiFiClient;
 PubSubClient mqtt_client(ESPWiFiClient);
 
 
-//variaveis do WiFi e do MQTT
+//Variáveis do WiFi e do MQTT
 const char* WIFI_SSID = "projeto";
 const char* WIFI_PASS = "projeto1";
 int wifi_timeout = 200000;
-
 const char* mqtt_broker = "io.adafruit.com";
 const int mqtt_port = 1883;
 int mqtt_timeout = 10000;
 
-//variaveis do adafruit
+//Variáveis do AdaFruit
 const char* mqtt_usernameAdafruitIO = "matheusvidal";
-const char* mqtt_keyAdafruitIO = "aio_XDJT01qkap2W2lPyYBqKkts2nfhc";
+const char* mqtt_keyAdafruitIO = "aio_EDlY891x4z1mSy7vcM61Gr53Lgr9";
 
-
+//Configuração do AdaFruit
 #if defined(USE_AIRLIFT) || defined(ADAFRUIT_METRO_M4_AIRLIFT_LITE) ||         \
     defined(ADAFRUIT_PYPORTAL)
 // Configure the pins used for the ESP32 connection
@@ -37,26 +37,19 @@ AdafruitIO_WiFi io(IO_USERNAME, IO_KEY, WIFI_SSID, WIFI_PASS, SPIWIFI_SS,
 #else
 AdafruitIO_WiFi io(mqtt_usernameAdafruitIO, mqtt_keyAdafruitIO, WIFI_SSID, WIFI_PASS);
 #endif
-
 AdafruitIO_Feed *presenca = io.feed("presenca");
 AdafruitIO_Feed *vibracao = io.feed("vibracao");
-
 
 //Pinos do projeto
 int tringPin = 13;
 int echoPin = 12;
 int pinoVibracao = 34;
 
-
-//Variável do som
-#define SOUND_SPEED 0.034
-
-//Variáveis do projeto
 long duracaoPulso;
 float distanciaCm;
+#define SOUND_SPEED 0.034
 
-
-//conectando o MQTT
+//Conectando o MQTT
 void connectMQTT() {
   unsigned long tempoInicial = millis();
   while   (!mqtt_client.connected() && (millis() - tempoInicial < mqtt_timeout)) {
@@ -78,7 +71,7 @@ void connectMQTT() {
 }
 
 
-//conectando o WiFi
+//Conectando o WiFi
 void conecteWiFi(){
   WiFi.mode(WIFI_STA); //"station mode": permite o ESP32 ser um cliente da rede WiFi
   WiFi.begin(WIFI_SSID, WIFI_PASS);
@@ -101,7 +94,7 @@ void conecteWiFi(){
 }
 
 
-//configurando setup
+//Configurando o setup
 void setup() {
   Serial.begin(115200);
   pinMode(tringPin, OUTPUT);
@@ -114,15 +107,13 @@ void setup() {
   }
 }
 
-
 void loop() {
   if (!mqtt_client.connected()){
     connectMQTT();
   }
 
-  //Recebendo o valor do sensor
-  int vibracao_valor;
-  vibracao_valor = digitalRead(pinoVibracao);
+  //Recebendo o valor do sensor de vibração
+  long measurement = vibration();
   
   //Envio de sinal de tring
   digitalWrite(tringPin, LOW);
@@ -132,24 +123,38 @@ void loop() {
   delayMicroseconds(10);
   digitalWrite(tringPin, LOW);
 
-  Serial.println("A vibração é: " + String(vibracao_valor));
-
   //Calcular o tempo que o pino fica alto em MS
   duracaoPulso = pulseIn(echoPin, HIGH);
 
-  //Calcula a distancia
+  //Calcular a distância
   distanciaCm = (duracaoPulso * SOUND_SPEED) / 2;
   Serial.print("A distância é:" + String(distanciaCm));
   Serial.println("\n");
 
   if (mqtt_client.connected()){
     mqtt_client.loop();
+    
+    //Publicação da presença
     mqtt_client.publish("matheusvidal/feeds/presenca", String(distanciaCm).c_str(), true);
-    mqtt_client.publish("matheusvidal/feeds/vibracao", String(vibracao_valor).c_str(), true + "\n");
-    Serial.println("Publicou o dado da vibração: " + String(vibracao_valor));
     Serial.println("Publicou o dado da presença: " + String(distanciaCm) + "\n");
-    delay(2700);
-  }
+        
+    if(measurement > 0){
+      Serial.println("Está vibrando em: " + String(measurement));      
+    } 
+    else{
+      Serial.println("Não está vibrando");
+    }
 
-  delay(1000);
+    //Publicação da vibração
+    mqtt_client.publish("matheusvidal/feeds/vibracao", String(measurement).c_str(), true + "\n");
+    Serial.println("Publicou o dado da vibração: " + String(measurement));  
+    delay(800);
+  }
+  delay(850);
+}
+
+//Função para receber a vibração
+long vibration(){
+  long measurement = pulseIn (pinoVibracao, HIGH);
+  return measurement;
 }
