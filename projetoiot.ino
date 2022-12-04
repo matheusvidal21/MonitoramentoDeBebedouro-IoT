@@ -9,8 +9,8 @@ PubSubClient mqtt_client(ESPWiFiClient);
 
 
 //Variáveis do WiFi e do MQTT
-const char* WIFI_SSID = "CASA 02";
-const char* WIFI_PASS = "marcos115";
+const char* WIFI_SSID = "projeto";
+const char* WIFI_PASS = "projeto1";
 int wifi_timeout = 200000;
 const char* mqtt_broker = "io.adafruit.com";
 const int mqtt_port = 1883;
