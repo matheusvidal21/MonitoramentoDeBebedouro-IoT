@@ -13,6 +13,8 @@ Esse projeto consiste no monitoramento de um bebedouro de água – a Coisa – 
 ## Arquitetura:
 A aplicação tem como núcleo da sua arquitetura o microcontrolador ESP32 DEVKIT V4, no qual estão conectados dois sensores: o sensor de distância HC-SR04 e o sensor de vibração SW-420. Os dados do sensor de distância são usados para computar a quantidade de pessoas que bebem água no bebedouro monitorado, já os dados do sensor de vibração são usados para contabilizar a quantidade de galões trocados. Os dados captados dos referidos sensores são transmitidos para a internet através da placa WiFi do microcontrolador ESP32. O protocolo de comunicação adotado foi o Message Queuing Telemetry Transport (MQTT) embutido na plataforma IoT. O AdaFruit IO foi a plataforma IoT escolhida para receber e armazenar os dados, que são apresentados em Dashboards. Após isso, o Raspberry PI foi utilizado para o recebimento de dados no broker e tratá-los, fazendo o cálculo da média de tempo em que ocorre a troca de galão, e enviando um aviso que a água está acabando para o email do suporte do IMD. A figura abaixo apresenta o esquema da arquitetura IoT no projeto em forma de diagrama:
 
+![Arquitetura IoT](docs/arquitetura.png)
+
 imagem
 
 ## Metodologia:
