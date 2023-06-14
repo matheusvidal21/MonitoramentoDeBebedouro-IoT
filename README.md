@@ -8,7 +8,7 @@ Universidade Federal do Rio Grande do Norte <br>
 
 - 💡 [Descrição do projeto](#-descrição-do-projeto)
 - 🎯 [Introdução](#-introdução)
-- 🎯 [Implementação](#-implementação)
+- 🔧 [Implementação](#-implementação)
 - 🏗️ [Arquitetura](#%EF%B8%8F-arquitetura)
 - 📈 [Metodologia](#-metodologia)
 - 🖥️ [Dispositivos IoT](#%EF%B8%8F-dispositivos-iot)
