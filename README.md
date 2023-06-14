@@ -8,6 +8,7 @@ Universidade Federal do Rio Grande do Norte <br>
 
 - 💡 [Descrição do projeto](#-descrição-do-projeto)
 - 🎯 [Introdução](#-introdução)
+- 🎯 [Implementação](#-implementação)
 - 🏗️ [Arquitetura](#%EF%B8%8F-arquitetura)
 - 📈 [Metodologia](#-metodologia)
 - 🖥️ [Dispositivos IoT](#%EF%B8%8F-dispositivos-iot)
@@ -24,11 +25,14 @@ O projeto tem como objetivo monitorar algum ambiente através da captação de a
   <img src="docs/monitoramento2.png" alt="Imagem 1 do monitoramento">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figuras 01 e 02 - Imagens do monitoramento na universidade. </p>
+<p align="center"> Figuras 01 e 02 - Imagens do monitoramento na universidade. </p>
 
 ## 🎯 Introdução:
 
 Esse projeto consiste no monitoramento de um bebedouro de água – a Coisa – o ambiente escolhido foi o Instituto Metrópole Digital. A problemática a ser resolvida é entender o comportamento dos alunos e funcionários do IMD em relação à água potável, assim, conseguimos perceber quantas pessoas beberam água e quais foram os horários com maior fluxo. Além disso, saber a quantidade de trocas de galões no intervalo monitorado para reconhecer quantos litros foram consumidos pelas pessoas. Com o monitoramento foi possível recolher os dados de quantas pessoas usaram o bebedouro e quantas vezes ocorreu a troca do galão de água. Após o desenvolvimento do código para a parte lógica e recebimento de dados, o projeto usou fisicamente: Um protoboard (matriz de contato), um ESP32 DEVKIT V4, um sensor de distância (HC-SR04), um sensor de vibração (SW 420), e um Raspberry PI. Além disso, para enviar os dados das variáveis foi utilizado os protocolos de comunicação: WiFi (protocolo físico) e um broker MQTT atrelado a plataforma IoT.
+
+## 🔧 Implementação:
+O código fonte desse projeto está implementado no arquivo [projetoiot.ino](projetoiot.ino). Consulte esse arquivo para obter mais detalhes e implementação relacionada.
 
 ## 🏗️ Arquitetura:
 
@@ -38,7 +42,7 @@ A aplicação tem como núcleo da sua arquitetura o microcontrolador ESP32 DEVKI
   <img src="docs/arquitetura.png" alt="Arquitetura IoT">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figura 03 - Esquema da arquitetura de projeto IoT. </p>
+<p align="center"> Figura 03 - Esquema da arquitetura de projeto IoT. </p>
 
 ## 📈 Metodologia:
 
@@ -52,13 +56,13 @@ Conectados ao microcontrolador, foi usado dois sensores que foram essenciais par
 Com o ESP32 o projeto teve a capacidade de proporcionar comunicação sem fio através do WiFi (Wireless Fidelity), que foi um dos protocolos de comunicação e interface do projeto, na qual, foi possível se comunicar com a internet para o transporte de dados. O WiFi foi utilizado devido a possibilidade de comunicação sem o uso de cabo e uma frequência suficiente (2,4 GHz).
 E para o tráfego de dados foi utilizado o protocolo MQTT, que está embutido na plataforma IoT escolhida, assim, possibilitou a comunicação entre máquinas. O MQTT segue o modelo de publisher-subscriber, onde o dispositivo IoT conecta-se a um broker para receber e enviar dados em um tópico para ser publicado. Além disso, no projeto foi utilizado o IDE Arduino para o desenvolvimento e gravação do código. Com ele, o projeto conseguiu desenvolver o software que foi inserido na placa para realizar as atividades programadas, além de conseguir visualizar o recebimento das variáveis no serial.
 Ademais, foi utilizado um micro-computador Raspberry PI para coletar os dados que foram enviados para o broker, através da plataforma do Node-RED. Essa plataforma também permitiu tratar os dados para fazer o cálculo da média de tempo em que ocorrem as trocas de galões de água para posteriormente enviar, com antecedência, um aviso que a água naquele bebedouro está acabando para o email do suporte do IMD.
-A metodologia instaurada para solução do monitoramento, foi elaborada a partir do pensamento de captar se alguém está bebendo água, através da distância de uma pessoa próxima ao bebedouro (em média até 50cm), e também, em detectar a vibração do bebedouro para saber se o galão está sendo trocado, a partir de uma vibração grande na Coisa. Então assim, foi decidido que a melhor posição para detectar essas variáveis era atrelar o projeto IoT na lateral do bebedouro, onde foi possível captar a distância da pessoa em relação ao sensor, e também a vibração do bebedouro. No decorrer das aulas, foi sendo atendido cada requisito do projeto, onde conseguimos adaptar para chegar em uma solução final. Dos requisitos propostos, inicialmente, foram sendo atendidas e montadas as demandas físicas, como o protoboard juntamente com o microcontrolador e os sensores que foi decidido utilizar, baseado na demanda do monitoramento. Após isso, foi realizado o código no IDE Arduino para o funcionamento, armazenamento, recebimento e envio de variáveis (distância e vibração). Após algumas falhas, que consistiam principalmente em ruídos presentes nos sensores e falha de conexão, ocorreram diversos testes até que foram corrigidas através do algoritmo Seguindo, foi desenvolvida outra parte do código para se conectar ao MQTT e WiFi, assim conseguindo enviar e publicar os dados na plataforma AdaFruit, na qual, foi utilizada para tratar os dados e visualizar através de feeds e dashboard. Após a conclusão, foi percebido que a maior demanda foi o código para o funcionamento total do projeto.
+A metodologia instaurada para solução do monitoramento, foi elaborada a partir do pensamento de captar se alguém está bebendo água, através da distância de uma pessoa próxima ao bebedouro (em média até 50cm), e também, em detectar a vibração do bebedouro para saber se o galão está sendo trocado, a partir de uma vibração grande na Coisa. Então assim, foi decidido que a melhor posição para detectar essas variáveis era atrelar o projeto IoT na lateral do bebedouro, onde foi possível captar a distância da pessoa em relação ao sensor, e também a vibração do bebedouro. No decorrer das aulas, foi sendo atendido cada requisito do projeto, onde conseguimos adaptar para chegar em uma solução final. Dos requisitos propostos, inicialmente, foram sendo atendidas e montadas as demandas físicas, como o protoboard juntamente com o microcontrolador e os sensores que foi decidido utilizar, baseado na demanda do monitoramento. Após isso, foi realizado o código no IDE Arduino para o funcionamento, armazenamento, recebimento e envio de variáveis (distância e vibração). Após algumas falhas, que consistiam principalmente em ruídos presentes nos sensores e falha de conexão, ocorreram diversos testes até que foram corrigidas através do algoritmo Seguindo, foi desenvolvida outra parte do código para se conectar ao MQTT e WiFi, assim conseguindo enviar e publicar os dados na plataforma AdaFruit, na qual, foi utilizada para tratar os dados e visualizar através de feeds e dashboard. Após a conclusão, foi percebido que a maior demanda foi o código para o funcionamento total do projeto. 
 
 <p align="center">
   <img src="docs/dispositivos.png" alt="Dispositivos">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figura 04 - Imagem da prototipação dos dispositivos. </p>
+<p align="center"> Figura 04 - Imagem da prototipação dos dispositivos. </p>
 
 ## 📡 Conectividade:
 
@@ -69,7 +73,7 @@ O WiFi foi usado para configuração de interface do projeto, ele é um protocol
   <img src="docs/conectividade.png" alt="Conectividade">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figura 05 - Detalhes da conexão MQTT do AdaFruit.. Fonte: Adafruit IO API Reference. Adafruit.com. https://io.adafruit.com/api/docs/mqtt.html </p>
+<p align="center"> Figura 05 - Detalhes da conexão MQTT do AdaFruit.. Fonte: Adafruit IO API Reference. Adafruit.com. https://io.adafruit.com/api/docs/mqtt.html </p>
 
 ## 🌐 Plataformas, Aplicações e Serviços:
 
@@ -79,13 +83,13 @@ No referido projeto foi usado o Adafruit IO como plataforma IoT. Essa plataforma
   <img src="docs/plataformas.png" alt="Plataforma" height="350" width="auto">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figura 06 - Dashboard com dados dos sensores de distância e vibração. </p>
+<p align="center"> Figura 06 - Dashboard com dados dos sensores de distância e vibração. </p>
 
 <p align="center">
   <img src="docs/plataformas2.png" alt="Plataforma 2" height="350" width="auto">
 </p>
 
-<p style="text-align: center; font-size: 12px; margin-bottom: 80px;"> Figura 07 - Visualização dos feeds das variáveis. </p>
+<p align="center"> Figura 07 - Visualização dos feeds das variáveis. </p>
 
 Após o recebimento no broker da Adafruit, o micro-computador Raspberry coleta esses dados enviados ao broker na plataforma Node-RED para tratá-los. Com esses dados coletados (vibração e presença) foi possível calcular uma média de tempo em que o galão é trocado, e assim, tornou-se possível enviar uma mensagem de alerta que a água estava acabando para o email da secretaria do IMD.
 
@@ -93,13 +97,13 @@ Após o recebimento no broker da Adafruit, o micro-computador Raspberry coleta e
   <img src="docs/node-red.png" alt="Visualização do Node-RED no Raspberry" height="350" width="auto">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figura 08 - Visualização do Node-RED no Raspberry. </p>
+<p align="center"> Figura 08 - Visualização do Node-RED no Raspberry. </p>
 
 <p align="center">
   <img src="docs/mensagemnoemail.png" alt=" Mensagem enviada para o email da secretaria do IMD." height="350" width="auto">
 </p>
 
-<p style="text-align: center; font-size: 12px;"> Figura 09 - Mensagem enviada para o email da secretaria. </p>
+<p align="center"> Figura 09 - Mensagem enviada para o email da secretaria. </p>
 
 ## 📊 Resultados e discussões:
 
